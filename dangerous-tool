@@ -14,10 +14,8 @@ run () {
   case $1 in
     fluentd)
       docker_fluentd
-      ;;
-    ?)
       exit 0
-      ;; 
+      ;;
   esac
 }
 
