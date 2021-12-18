@@ -1,0 +1,43 @@
+
+#!/bin/bash
+
+OPTIND=1
+TARGET_USER=$USER
+
+
+docker_fluentd () {
+  echo "Starting fluentd journal forwarder"
+  docker run -p 9880:9880 -v $(pwd)/fluentd/:/fluentd/etc -v /mnt/c/Users/$TARGET_USER/"Saved Games"/"Frontier Developments"/"Elite Dangerous"/:/var/log/elite_dangerous elite-fluentd
+}
+
+run () {
+  case $1 in
+    fluentd)
+      docker_fluentd
+      ;;
+    ?)
+      exit 0
+      ;; 
+  esac
+}
+
+help () {
+cat << EOF
+  usage:
+    -t <tool> Run a tool in the dangerous toolbox 
+    Example: dangerous-box -t fluentd 
+EOF
+}
+
+while getopts t:h opt; do
+  case "$opt" in
+    t) 
+      tool=${OPTARG}
+      run $tool      
+      ;;
+    h)
+      help
+      exit 0
+      ;;
+  esac
+done
